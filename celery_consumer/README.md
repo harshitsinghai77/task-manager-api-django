@@ -21,7 +21,7 @@ To set up the project using Docker Compose, follow these steps:
 
 2. Clone the repository:
 ```bash
- git clone <repository-url>
+ git clone https://github.com/harshitsinghai77/task-manager-api-django.git
 ```
 
 3. Navigate to the project directory:

@@ -7,7 +7,7 @@ Task manager API that can be set up using Docker and Docker Compose. It includes
 1. **Clone the Repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/harshitsinghai77/task-manager-api-django.git
    cd django-task-manager-api
    ```
 
@@ -39,3 +39,15 @@ docker-compose up
 This command will start the Celery worker service defined in the `docker-compose.yml` file.
 
 For more information of celery_consumer, refer to the [celery_consumer README](celery_consumer/README.md).
+
+### Other Services:
+Redis: Port 6379
+MySQL: Port 3306
+Django App: Port 8000
+
+### Important URLs:
+
+Django App: http://127.0.0.1:8000/
+Swagger UI: http://127.0.0.1:8000/api/docs/
+ReDoc UI: http://127.0.0.1:8000/api/redoc/
+Celery Flower: http://127.0.0.1:5555/
