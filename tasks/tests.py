@@ -118,14 +118,21 @@ class TaskAPITestCase(TestCase):
         data = self.valid_task_data.copy()
         data['status'] = 'completed'
         
-        response = self.client.post(
-            reverse('task-list'),
-            data,
-            format='json'
-        )
-        
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['status'], 'pending')
+        with patch('config.celery_app.send_task') as mock_send_task:
+            response = self.client.post(
+                reverse('task-list'),
+                data,
+                format='json'
+            )
+
+            mock_send_task.assert_called_once_with(
+                'tasks.process_task',
+                args=[response.data['task_id']],
+                queue='default'
+            )
+            
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data['status'], 'pending')
 
     def test_update_multiple_fields(self):
         """Test updating multiple fields is not allowed"""
