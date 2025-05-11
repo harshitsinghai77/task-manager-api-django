@@ -1,0 +1,4 @@
+mysqlclient==2.2.7
+celery==5.5.2
+redis==6.0.0
+SQLAlchemy==2.0.40

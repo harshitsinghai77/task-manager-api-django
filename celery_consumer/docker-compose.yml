@@ -1,0 +1,48 @@
+services:
+  
+  celery_default:
+    build: .
+    command: celery -A celery_app.celery_app worker --loglevel=info --pool=prefork --autoscale=10,2 -Q default
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: task_db
+      MYSQL_USER: djangouser
+      MYSQL_PASSWORD: mypassword
+    networks:
+      - shared_network_task_app
+   
+  celery_dlq:
+    build: .
+    command: celery -A celery_app.celery_app worker --loglevel=info --pool=prefork --concurrency=1 -Q dlq
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: task_db
+      MYSQL_USER: djangouser
+      MYSQL_PASSWORD: mypassword
+    networks:
+      - shared_network_task_app
+  
+  flower:
+    image: mher/flower:master   # Use the pre-built image from Docker Hub
+    container_name: flower
+    ports:
+      - "5555:5555"  # Expose Flower's web UI on port 5555
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - FLOWER_PORT=5555
+    depends_on:
+      - celery_default
+      - celery_dlq
+    networks:
+      - shared_network_task_app
+
+networks:
+  shared_network_task_app:
+    external: true
+  

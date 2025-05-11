@@ -1,0 +1,5 @@
+__pycache__/
+env/
+
+celery_consumer/__pycache__
+celery_consumer/env/
