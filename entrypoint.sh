@@ -18,8 +18,12 @@ echo "Applying database migrations..."
 python manage.py migrate
 
 # Create a superuser 
-# echo "Creating superuser..."
+echo "Creating superuser..."
 python config/scripts/create_superuser.py
+
+# Collect static files
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
 
 # Run the Django application with Gunicorn
 echo "Starting production server..."
